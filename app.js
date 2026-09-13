@@ -14,6 +14,7 @@ const app = express()
 
 app.use(express.json())
 app.use(checkCors)
+app.use("/test")
 app.use("/request", requestRouter)
 app.use("/theme", themeRouter)
 app.use("/article", articleRouter)
