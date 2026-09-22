@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { questionLevels } from "../config/test.config.js"
 
 const answerSchema = new Schema({
     text: {
@@ -19,11 +20,11 @@ const questionSchema = new Schema({
     level: {
         type: String,
         required: true,
-        enum: ["A1", "A2", "B1", "B2", "C1", "C2"]
+        enum: questionLevels
     },
     order: {
-        type: Boolean,
-        default: false
+        type: Number,
+        default: 999
     },
     answers: [answerSchema]
 })

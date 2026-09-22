@@ -28,16 +28,18 @@ const Tests = {
             return null
         }
     },
-    async changeStatusById(testId) {
+    async changeStatusById(testId, newStatus) {
         try {
-            const newStatusTest = await TestModel.createSearchIndexes()
-            return newStatusTest
+            const updatedTest = await TestModel.findByIdAndUpdate(testId, {
+                showOnSite: newStatus
+            })
+            return updatedTest
         } catch (error) {
-            console.log(`[Tests.updateById]: ${error.message}`)
+            console.log(`[Tests.changeStatusById]: ${error.message}`)
             return null
         }
     },
 
 }
 
-export {Tests}
+export { Tests }

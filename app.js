@@ -6,6 +6,8 @@ import { requestRouter } from "./src/routes/request.router.js"
 import { themeRouter } from "./src/routes/theme.router.js"
 import { articleRouter } from "./src/routes/article.router.js"
 import {connectDB} from "./src/config/db.config.js"
+import { testRouter } from "./src/routes/test.router.js"
+import { authRouter } from "./src/routes/auth.router.js"
 
 let server = null
 
@@ -14,7 +16,8 @@ const app = express()
 
 app.use(express.json())
 app.use(checkCors)
-app.use("/test")
+app.use("/test", testRouter)
+app.use("/auth", authRouter)
 app.use("/request", requestRouter)
 app.use("/theme", themeRouter)
 app.use("/article", articleRouter)

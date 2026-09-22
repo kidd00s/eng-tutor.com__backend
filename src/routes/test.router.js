@@ -7,4 +7,4 @@ const testRouter = Router()
 // POST  на /test/new
 testRouter.post("/new", checkTest, TestController.create)
 
-export {testRouter}
+export { testRouter }
