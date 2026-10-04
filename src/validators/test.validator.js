@@ -1,42 +1,47 @@
-import { questionLevels } from "../config/test.config.js"
+// validators/test.validator.js
+import { z } from "zod";
+import { questionLevels } from "../config/test.config.js";
 
-async function checkTest(req, res, next) {
-    if (!req.body) return res.status(400).send("Заповніть поля")
+// ==== Схеми ====
 
+const answerSchemaValidator = z.object({
+  text: z.string().min(1, "Введіть текст відповіді"),
+  right: z.boolean().default(false)
+});
 
-    const { test } = req.body
+const questionSchemaValidator = z.object({
+  text: z.string().min(1, "Введіть текст питання"),
+  level: z.enum(questionLevels, {
+    errorMap: () => ({ message: "Некоректний рівень питання" })
+  }),
+  order: z.number().default(999),
+  answers: z.array(answerSchemaValidator).min(2, "Введіть хоча б 2 відповіді")
+});
 
-    if(!test.name || typeof test.name !== "string") return res.status(400).send("Введіть правильне їм'я")
-    
-    if (test.showOnSite && typeof test.showOnSite !== "boolean") return res.status(400).send("Введіть значення показу тесту так або ні")
+// Валідатор для СТВОРЕННЯ тесту
+const createTestSchemaValidator = z.object({
+  name: z.string().min(1, "Введіть ім'я тесту"),
+  showOnSite: z.boolean().default(false),
+  questions: z.array(questionSchemaValidator).default([])
+});
 
-    if (!test.questions || typeof test.questions !== "array" || test.questions.length <= 6) return res.status(400).send("Зробіть більше питань")
+// Валідатор для РЕДАГУВАННЯ тесту (усі поля опціональні)
+const updateTestSchemaValidator = createTestSchemaValidator.partial();
 
+// ==== Мідлвар ====
 
+const checkTest = (schema) => (req, res, next) => {
+  const result = schema.safeParse(req.body);
 
+  if (!result.success) {
+    return res.status(400).json({
+      message: "Помилка валідації",
+      errors: result.error.flatten().fieldErrors
+    });
+  }
 
-    const { questions } = test
+  req.body = result.data;
+  next();
+};
 
-    questions.forEach(quest => {
-        if(!quest) return res.status(400).send("Зробіть питання")
-        if(!quest.text || typeof quest.text !== "string") return res.status(400).send("Введіть текст питання")
-        if(!quest.level || typeof quest.level !== "string" || !questionLevels.includes(quest.level)) return res.status(400).send("Введіть правильний рівень питання")
-    })
-
-
-
-
-    const { answers } = questions
-
-    answers.forEach(answer => {
-        if(!answer) return res.status(400).send("Зробіть відповіді на питання")
-        if(!answer.text || typeof answer.text !== "string") return res.status(400).send("Напишіть текст відповіді")
-        if(!answer.right || typeof answer.right !== "boolean") return res.status(400).send("Виберіть чи є відповідь правильною")
-    })
-
-
-    req.newTest = test
-    next()
-}
-
-export {checkTest}
+export { createTestSchemaValidator, updateTestSchemaValidator, checkTest };

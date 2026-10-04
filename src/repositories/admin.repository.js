@@ -1,6 +1,16 @@
 import { AdminModel } from "../models/Admin.model.js"
 
 const Admins = {
+    async findAll() {
+        try {
+            const admins = await AdminModel.find()
+            return admins
+        } catch (error) {
+            console.log(`[Admins.findAll]: ${error.message}`)
+            return null
+        }
+    },
+
     async create(admin) {
         try {
             const newAdmin = await AdminModel.create(admin)
@@ -13,8 +23,8 @@ const Admins = {
 
     async findByEmail(adminEmail) {
         try {
-            const newAdmin = await AdminModel.find(adminEmail)
-            return newAdmin
+            const foundAdmin = await AdminModel.findOne({ email: adminEmail })
+            return foundAdmin
         } catch (error) {
             console.log(`[Admins.findByEmail]: ${error.message}`)
             return null

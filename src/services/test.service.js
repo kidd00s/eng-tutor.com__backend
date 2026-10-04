@@ -5,7 +5,7 @@ const TestsService = {
         try {
             const newTest = await Tests.create(test)
 
-            if(!newTest) return null
+            if (!newTest) return null
 
             return newTest
         } catch (error) {
@@ -18,7 +18,7 @@ const TestsService = {
         try {
             const deletedTest = await Tests.deleteById(testId)
 
-            if(!deletedTest) return null
+            if (!deletedTest) return null
 
             return deletedTest
         } catch (error) {
@@ -31,7 +31,7 @@ const TestsService = {
         try {
             const updatedTest = await Tests.updateById(testId)
 
-            if(!updatedTest) return null
+            if (!updatedTest) return null
 
             return updatedTest
         } catch (error) {
@@ -40,9 +40,18 @@ const TestsService = {
         }
     },
 
-    async changeStatus() {
-        // 
+    async changeStatus(testId, newStatus) {
+        try {
+            const updatedStatus = await Tests.changeStatusById(testId, newStatus)
+
+            if (!updatedStatus) return null
+
+            return updatedStatus
+        } catch (error) {
+            console.log(`[TestsService.changeStatus] - ${error.message}`)
+            return null
+        }
     }
 }
 
-export {TestsService}
+export { TestsService }

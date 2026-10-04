@@ -8,6 +8,8 @@ import { articleRouter } from "./src/routes/article.router.js"
 import {connectDB} from "./src/config/db.config.js"
 import { testRouter } from "./src/routes/test.router.js"
 import { authRouter } from "./src/routes/auth.router.js"
+import { createFirstAdmin } from "./src/scripts/createFirstAdmin.js"
+
 
 let server = null
 
@@ -30,6 +32,7 @@ async function startServer() {
         connectDB()
 
         server = app.listen(serverConfig.PORT, () => {
+            createFirstAdmin()
             console.log(`Server is running on port ${serverConfig.PORT}`)
         })
     } catch (error) {
