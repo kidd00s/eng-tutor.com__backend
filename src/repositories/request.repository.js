@@ -10,21 +10,21 @@ const Requests = {
             return null
         }
     },
-    async getAll() {
+    async findAll() {
         try {
             const allRequests = await RequestModel.find()
             return allRequests
         } catch (error) {
-            console.log(`[Requests.getAll]: ${error.message}`)
+            console.log(`[Requests.findAll]: ${error.message}`)
             return null
         }
     },
-    async getById(requestId) {
+    async findById(requestId) {
         try {
             const request = await RequestModel.findById(requestId)
             return request
         } catch (error) {
-            console.log(`[Requests.getById]: ${error.message}`)
+            console.log(`[Requests.findById]: ${error.message}`)
             return null
         }
     },

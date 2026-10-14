@@ -10,6 +10,25 @@ const Tests = {
             return null
         }
     },
+    async findAll() {
+        try {
+            const tests = await TestModel.find()
+            return tests
+        } catch (error) {
+            console.log(`[Tests.findAll]: ${error.message}`)
+            return null
+        }
+    },
+
+    async findById(testId) {
+        try {
+            const test = await TestModel.findById(testId)
+            return test
+        } catch (error) {
+            console.log(`[Tests.findById]: ${error.message}`)
+            return null
+        }
+    },
     async deleteById(testId) {
         try {
             const deletedTest = await TestModel.findByIdAndDelete(testId)

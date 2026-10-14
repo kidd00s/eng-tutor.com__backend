@@ -19,12 +19,21 @@ const Themes = {
             return null
         }
     },
-    async getAll() {
+    async findAll() {
         try {
             const allThemes = await ThemeModel.find()
             return allThemes
         } catch (error) {
-            console.log(`[Themes.getAll]: ${error.message}`)
+            console.log(`[Themes.findAll]: ${error.message}`)
+            return null
+        }
+    },
+    async findById(themeId) {
+        try {
+            const oneTheme = await ThemeModel.findById(themeId)
+            return oneTheme
+        } catch (error) {
+            console.log(`[Themes.findById]: ${error.message}`)
             return null
         }
     },

@@ -10,30 +10,30 @@ const Articles = {
             return null
         }
     },
-    async getAll() {
+    async findAll() {
         try {
             const allArticles = await ArticleModel.find()
             return allArticles
         } catch (error) {
-            console.log(`[Articles.getAll]: ${error.message}`)
+            console.log(`[Articles.findAll]: ${error.message}`)
             return null
         }
     },
-    async getById(articleId) {
+    async findById(articleId) {
         try {
             const article = await ArticleModel.findById(articleId)
             return article
         } catch (error) {
-            console.log(`[Articles.getById]: ${error.message}`)
+            console.log(`[Articles.findById]: ${error.message}`)
             return null
         }
     },
-    async getBySlug(articleSlug) {
+    async findBySlug(articleSlug) {
         try {
             const article = await ArticleModel.findOne({slug: articleSlug})
             return article
         } catch (error) {
-            console.log(`[Articles.getBySlug]: ${error.message}`)
+            console.log(`[Articles.findBySlug]: ${error.message}`)
             return null
         }
     },

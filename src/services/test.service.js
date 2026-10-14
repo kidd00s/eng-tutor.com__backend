@@ -14,7 +14,7 @@ const TestsService = {
         }
     },
 
-    async delete(testId) {
+    async deleteTest(testId) {
         try {
             const deletedTest = await Tests.deleteById(testId)
 
@@ -27,7 +27,7 @@ const TestsService = {
         }
     },
 
-    async update(testId) {
+    async updateTest(testId) {
         try {
             const updatedTest = await Tests.updateById(testId)
 
@@ -49,6 +49,32 @@ const TestsService = {
             return updatedStatus
         } catch (error) {
             console.log(`[TestsService.changeStatus] - ${error.message}`)
+            return null
+        }
+    },
+
+    async getAll() {
+        try {
+            const tests = await Tests.findAll()
+
+            if (!tests) return null
+
+            return tests
+        } catch (error) {
+            console.log(`[TestsService.getAll] - ${error.message}`)
+            return null
+        }
+    },
+
+    async getById(testId) {
+        try {
+            const test = await Tests.findById(testId)
+
+            if (!test) return null
+
+            return test
+        } catch (error) {
+            console.log(`[TestsService.getById] - ${error.message}`)
             return null
         }
     }

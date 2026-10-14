@@ -1,6 +1,6 @@
 const aiConfig = {
     models: {
-        easy: "deepseek-v4-flash",
+        easy: "deepseek-flash",
         hard: "deepseek-v4-pro"
     },
     prompts: {

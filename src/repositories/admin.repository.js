@@ -49,6 +49,15 @@ const Admins = {
             return null
         }
     },
+    async findById(adminId) {
+        try {
+            const exAdmin = await AdminModel.findById(adminId)
+            return exAdmin
+        } catch (error) {
+            console.log(`[Admins.findById]: ${error.message}`)
+            return null
+        }
+    },
     async changeRoleById(adminId, newRole) {
         try {
             const updatedAdmin = await AdminModel.findByIdAndUpdate(adminId, {
