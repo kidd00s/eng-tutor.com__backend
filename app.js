@@ -9,6 +9,7 @@ import {connectDB} from "./src/config/db.config.js"
 import { testRouter } from "./src/routes/test.router.js"
 import { authRouter } from "./src/routes/auth.router.js"
 import { createFirstAdmin } from "./src/scripts/createFirstAdmin.js"
+import { errorHandler } from "./src/middlewares/errorHandler.middleware.js"
 
 
 let server = null
@@ -23,6 +24,9 @@ app.use("/auth", authRouter)
 app.use("/request", requestRouter)
 app.use("/theme", themeRouter)
 app.use("/article", articleRouter)
+
+app.use(errorHandler)
+
 
 async function startServer() {
     try {

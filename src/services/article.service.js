@@ -1,50 +1,36 @@
 import { Articles } from "../repositories/article.repository.js"
 import { ThemesService } from "./theme.service.js"
 import { AiService } from "./ai.service.js"
+import { AppError } from "../errors/create.error.js"
 
 const ArticlesService = {
     async generate() {
-        try {
             const theme = await ThemesService.getThemeForArticle()
-            if(!theme) return null
+            if(!theme) throw new AppError("Немає тем для статті", 404)
 
             const article = await AiService.generateArticle(theme)
-            if(!article) return null
+            if(!article) throw new AppError("Статтю не згенеровано", 502) 
 
             console.log(article)
             const savedArticle = await Articles.create(article)
 
-            if(!savedArticle) return null
+            if(!savedArticle) throw new AppError("Статтю не збережено", 500) 
 
             return savedArticle
-        } catch (error) {
-            console.log(`[ArticlesService.generate] - ${error.message}`)
-            return null
-        }
     },
 
     async getAll() {
-        try {
             const allArticles = await Articles.findAll()
-            if(!allArticles) return null
+            if(!allArticles) throw new AppError("Статті не знайдено", 500)
 
             return allArticles
-        } catch (error) {
-            console.log(`[ArticlesService.getAll] - ${error.message}`)
-            return null
-        }
     },
 
     async getBySlug(articleSlug) {
-        try {
             const article = await Articles.findBySlug(articleSlug)
-            if(!article) return null
+            if(!article) throw new AppError("Статтю не знайдено", 500)
 
             return article
-        } catch (error) {
-            console.log(`[ArticlesService.getBySlug] - ${error.message}`)
-            return null
-        }
     }
 }
 

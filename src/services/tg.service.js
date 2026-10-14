@@ -1,9 +1,8 @@
 import { tgConfig } from "../config/tg.config.js";
+import { AppError } from "../errors/create.error.js"
 
 const TgService = {
     async sendMessage(message) {
-        try {
-
 
              const req = await fetch(`https://api.telegram.org/bot${tgConfig.BOT_TOKEN}/sendMessage`, {
                 headers: {
@@ -16,15 +15,12 @@ const TgService = {
                 method: "POST"
              })
 
-             if(!req.ok) return null
+             if(!req.ok) throw new AppError("Заявку не надіслано", 500)
              const res = await req.json()
 
              return res.result
-        } catch (error) {
-            console.log(`[tgService.sendMessage]: ${error.message}`)
-            return null
-        }
-    }
+
+}
 }
 
-export {TgService}
+export { TgService }

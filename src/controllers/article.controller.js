@@ -2,45 +2,36 @@ import { ArticlesService } from "../services/article.service.js"
 
 
 const ArticleController = {
-    async generate(req, res) {
+    async generate(req, res, next) {
         try {
             const createdArticle = await ArticlesService.generate()
-
-            if (!createdArticle) return res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
-                
-
             
             return res.status(200).json({ success: true, message: "Статтю успішно створено", data: {article: createdArticle} })
         } catch (error) {
             console.log(`[ArticleController.create] - ${error.message}`)
-            res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
+            next(error)
         }
     },
 
-    async getAll(req, res) {
+    async getAll(req, res, next) {
         try {
             const articles = await ArticlesService.getAll()
-
-            if (!articles) return res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
-            if (articles.length === 0) return res.status(200).json({ success: true, message: "Статті ще немає" })
 
             return res.status(200).json({ success: true, message: "Всі статті знайдені", data: {articles: articles} })
         } catch (error) {
             console.log(`[ArticleController.getAll] - ${error.message}`)
-            res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
+            next(error)
         }
     },
 
-    async getBySlug(req, res, articleSlug) {
+    async getBySlug(req, res, next) {
         try {
-            const article = await ArticlesService.getBySlug(articleSlug)
+            const article = await ArticlesService.getBySlug(req.params.slug)
 
-            if (!article) return res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
-
-            return res.status(200).json({ success: true, message: "Стаття знайдена", data: {articles: article} })
+            return res.status(200).json({ success: true, message: "Стаття знайдена", data: {article: article} })
         } catch (error) {
             console.log(`[ArticleController.getBySlug] - ${error.message}`)
-            res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
+            next(error)
         }
     }
 

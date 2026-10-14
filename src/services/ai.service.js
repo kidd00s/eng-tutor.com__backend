@@ -1,12 +1,10 @@
 import { aiConfig } from "../config/ai.config.js";
+import { AppError } from "../errors/create.error.js";
 
 const AiService = {
 
     async generateArticle(theme) {
-        try {
-            if (!aiConfig.DEEPSEEK_API_URL || !aiConfig.DEEPSEEK_API_KEY) {
-                throw new Error("Deepseek key or url is not defined")
-            }
+            if (!aiConfig.DEEPSEEK_API_URL || !aiConfig.DEEPSEEK_API_KEY) throw new AppError("Силка або ключ не передані", 500)
 
             const requestBody = {
                 model: aiConfig.models.easy,
@@ -35,24 +33,16 @@ const AiService = {
 
             const data = await response.json()
 
-            if (!response.ok) {
-                throw new Error(
-                    data?.error.message || `[generateArticle]: ${response.status}`
-                )
-            }
+            if (!response.ok) throw new AppError("Запит до АІ не правильний", 500)
 
 
 
             const finalResult = data?.choices?.[0]?.message?.content?.trim()
 
-            if(!finalResult) return `[generateAricle]: DeepSeek returned nothing`
+            if(!finalResult) throw new AppError("Фінальний результат не переданий", 500)
 
             console.log(`[generateArticle]: ${finalResult}`)
             return finalResult
-        } catch (error) {
-            console.log(`[generateArticle]: Failed to generate answer - ${error.message}`)
-            return { success: false, message: error.message }
-        }
     }
 
 }

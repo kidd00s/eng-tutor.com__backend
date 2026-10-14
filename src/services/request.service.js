@@ -1,43 +1,29 @@
 import { Requests } from "../repositories/request.repository.js"
+import { AppError } from "../errors/create.error.js"
 
 const RequestsService = {
     async create(request) {
-        try {
             const savedRequest = await Requests.create(request)
 
-            if(!savedRequest) return null
+            if(!savedRequest) throw new AppError("Заявку не створено", 500)
 
             return savedRequest
-        } catch (error) {
-            console.log(`[RequestsService.create] - ${error.message}`)
-            return null
-        }
     },
 
     async getAll() {
-        try {
             const requests = await Requests.findAll()
 
-            if(!requests) return null
+            if(!requests) throw new AppError("Заявки не знайдено", 500)
 
             return requests
-        } catch (error) {
-            console.log(`[RequestsService.getAll] - ${error.message}`)
-            return null
-        }
     },
 
     async getById(requestId) {
-        try {
             const request = await Requests.findById(requestId)
 
-            if(!request) return null
+            if(!request) throw new AppError("Заявку не знайдено", 500) 
 
             return request
-        } catch (error) {
-            console.log(`[RequestsService.getById] - ${error.message}`)
-            return null
-        }
     }
 }
 

@@ -1,18 +1,13 @@
 import { Admins } from "../repositories/admin.repository.js";
+import { AppError } from "../errors/create.error.js"
 
 const AdminService = {
     async getAdmin(userId) {
-        try {
-
             const exAdmin = await Admins.findById(userId)
 
-            if(!exAdmin) return null
+            if(!exAdmin) throw new AppError("Доступу немає", 404)
 
             return exAdmin
-        } catch (error) {
-            console.log(`[AdminService.getAdmin] - ${error.message}`)
-            return null
-        }
     }
 }
 
